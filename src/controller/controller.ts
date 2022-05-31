@@ -7,7 +7,6 @@ export async function getCookie(req: Request, res: Response) {
     
     console.log(req.query.url, "req.query.url")
       const user = await getCookieService(req.query.url as string);
-    // const user = "sdsd"
       return res.status(200).send({data:user})
     } catch (e: any) {
       log.error(e);
