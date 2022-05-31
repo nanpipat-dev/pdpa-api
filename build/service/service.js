@@ -17,7 +17,12 @@ const puppeteer_1 = __importDefault(require("puppeteer"));
 function getCookieService(url) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const browser = yield puppeteer_1.default.launch();
+            const browser = yield puppeteer_1.default.launch({
+                args: [
+                    '--no-sandbox',
+                    '--disable-setuid-sandbox',
+                ],
+            });
             const page = yield browser.newPage();
             // let encoded = encodeURI(url);
             const withHttp = () => url.replace(/^(?:(.*:)?\/\/)?(.*)/i, (match, schemma, nonSchemmaUrl) => schemma ? match : `https://${nonSchemmaUrl}`);
