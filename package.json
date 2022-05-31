@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "start": "node build/server.js",
-    "postinstall": "tsc"
+    "postinstall": "tsc",
+    "dev": "nodemon --config nodemon.json src/server.ts"
   },
   "dependencies": {
     "config": "^3.3.7",

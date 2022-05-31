@@ -17,10 +17,10 @@ export async function getCookieService(url: string): Promise<CookiesType[]> {
 
         console.log(url,withHttp(),"url")
 
-        await page.goto(withHttp());
+        await page.goto(withHttp(), { waitUntil: "networkidle2" });
 
 
-        const element = await page.waitForTimeout(15000)
+        // const element = await page.waitForTimeout(20000)
 
         const cookies = await page.cookies()
 
