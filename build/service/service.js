@@ -27,8 +27,8 @@ function getCookieService(url) {
             // let encoded = encodeURI(url);
             const withHttp = () => url.replace(/^(?:(.*:)?\/\/)?(.*)/i, (match, schemma, nonSchemmaUrl) => schemma ? match : `https://${nonSchemmaUrl}`);
             console.log(url, withHttp(), "url");
-            yield page.goto(withHttp());
-            const element = yield page.waitForTimeout(15000);
+            yield page.goto(withHttp(), { waitUntil: "networkidle2" });
+            // const element = await page.waitForTimeout(20000)
             const cookies = yield page.cookies();
             console.log(cookies, "cookies");
             const responseCookie = [];

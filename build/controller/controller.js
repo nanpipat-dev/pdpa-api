@@ -20,7 +20,6 @@ function getCookie(req, res) {
         try {
             console.log(req.query.url, "req.query.url");
             const user = yield (0, service_1.getCookieService)(req.query.url);
-            // const user = "sdsd"
             return res.status(200).send({ data: user });
         }
         catch (e) {

@@ -17,7 +17,34 @@ export async function getCookieService(url: string): Promise<CookiesType[]> {
 
         console.log(url,withHttp(),"url")
 
-        await page.goto(withHttp(), { waitUntil: "networkidle2" });
+        await page.goto(withHttp());
+
+        const element = await page.waitForTimeout(5000)
+
+      const findLinks = await page.evaluate(() =>
+        Array.from(document.querySelectorAll("a")).map((info) => ({
+          url: info.href
+        }))
+      );
+
+      // const fl: string[] = []
+      // await page.evaluate(() => {
+      //   if(document.querySelectorAll("a")) {
+      //     for(let d =0; (d < document.querySelectorAll("a").length && d < 10); d++){
+      //       console.log(document.querySelectorAll("a")[d])
+      //     }
+      //   }
+      // })
+
+      console.log(findLinks?.length,"findLinks?.length")
+
+      for(let j=0; j< 20 && j < findLinks?.length; j++) {
+        if(findLinks[j]?.url){
+          console.log(findLinks[j]?.url,"findLinks")
+          await page.goto(findLinks[j]?.url);
+          await page.waitForTimeout(1000)
+        }
+      }
 
 
         // const element = await page.waitForTimeout(20000)
