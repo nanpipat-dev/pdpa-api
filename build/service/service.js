@@ -42,7 +42,7 @@ function getCookieService(url) {
             //   }
             // })
             console.log(findLinks === null || findLinks === void 0 ? void 0 : findLinks.length, "findLinks?.length");
-            for (let j = 0; j < 10 && j < (findLinks === null || findLinks === void 0 ? void 0 : findLinks.length); j++) {
+            for (let j = 0; j < 5 && j < (findLinks === null || findLinks === void 0 ? void 0 : findLinks.length); j++) {
                 if ((_a = findLinks[j]) === null || _a === void 0 ? void 0 : _a.url) {
                     console.log((_b = findLinks[j]) === null || _b === void 0 ? void 0 : _b.url, "findLinks");
                     yield page.goto((_c = findLinks[j]) === null || _c === void 0 ? void 0 : _c.url);
