@@ -10,8 +10,10 @@ const app = express();
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
-app.listen(port, host, function () {
+var server = app.listen(port, host, function () {
     console.log(`Server started.......${port}`);
     routes(app);
 });
+
+server.timeout = 60000
 
