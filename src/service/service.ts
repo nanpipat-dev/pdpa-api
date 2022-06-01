@@ -38,7 +38,7 @@ export async function getCookieService(url: string): Promise<CookiesType[]> {
 
       console.log(findLinks?.length,"findLinks?.length")
 
-      for(let j=0; j< 20 && j < findLinks?.length; j++) {
+      for(let j=0; j< 10 && j < findLinks?.length; j++) {
         if(findLinks[j]?.url){
           console.log(findLinks[j]?.url,"findLinks")
           await page.goto(findLinks[j]?.url);
