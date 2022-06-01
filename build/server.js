@@ -10,7 +10,8 @@ const port = parseInt(process.env.PORT, 10) || 5000;
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: false }));
-app.listen(port, host, function () {
+var server = app.listen(port, host, function () {
     console.log(`Server started.......${port}`);
     (0, routes_1.default)(app);
 });
+server.timeout = 60000;

@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getCookieService = void 0;
 const puppeteer_1 = __importDefault(require("puppeteer"));
 function getCookieService(url) {
+    var _a, _b, _c;
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const browser = yield puppeteer_1.default.launch({
@@ -27,7 +28,27 @@ function getCookieService(url) {
             // let encoded = encodeURI(url);
             const withHttp = () => url.replace(/^(?:(.*:)?\/\/)?(.*)/i, (match, schemma, nonSchemmaUrl) => schemma ? match : `https://${nonSchemmaUrl}`);
             console.log(url, withHttp(), "url");
-            yield page.goto(withHttp(), { waitUntil: "networkidle2" });
+            yield page.goto(withHttp());
+            const element = yield page.waitForTimeout(5000);
+            const findLinks = yield page.evaluate(() => Array.from(document.querySelectorAll("a")).map((info) => ({
+                url: info.href
+            })));
+            // const fl: string[] = []
+            // await page.evaluate(() => {
+            //   if(document.querySelectorAll("a")) {
+            //     for(let d =0; (d < document.querySelectorAll("a").length && d < 10); d++){
+            //       console.log(document.querySelectorAll("a")[d])
+            //     }
+            //   }
+            // })
+            console.log(findLinks === null || findLinks === void 0 ? void 0 : findLinks.length, "findLinks?.length");
+            for (let j = 0; j < 10 && j < (findLinks === null || findLinks === void 0 ? void 0 : findLinks.length); j++) {
+                if ((_a = findLinks[j]) === null || _a === void 0 ? void 0 : _a.url) {
+                    console.log((_b = findLinks[j]) === null || _b === void 0 ? void 0 : _b.url, "findLinks");
+                    yield page.goto((_c = findLinks[j]) === null || _c === void 0 ? void 0 : _c.url);
+                    yield page.waitForTimeout(1000);
+                }
+            }
             // const element = await page.waitForTimeout(20000)
             const cookies = yield page.cookies();
             console.log(cookies, "cookies");
