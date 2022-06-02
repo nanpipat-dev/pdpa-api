@@ -13,8 +13,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getCookieService = void 0;
-const puppeteer_1 = __importDefault(require("puppeteer"));
 const chrome_aws_lambda_1 = __importDefault(require("chrome-aws-lambda"));
+const puppeteer_core_1 = __importDefault(require("puppeteer-core"));
 function getCookieService(url) {
     var _a, _b, _c;
     return __awaiter(this, void 0, void 0, function* () {
@@ -25,7 +25,8 @@ function getCookieService(url) {
             //     '--disable-setuid-sandbox',
             //   ],
             // });
-            const browser = yield puppeteer_1.default.launch({
+            console.log("newver");
+            const browser = yield puppeteer_core_1.default.launch({
                 args: [...chrome_aws_lambda_1.default.args, '--no-sandbox', "--disabled-setupid-sandbox"],
                 defaultViewport: chrome_aws_lambda_1.default.defaultViewport,
                 executablePath: yield chrome_aws_lambda_1.default.executablePath,
