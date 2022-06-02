@@ -5,6 +5,8 @@
   "license": "MIT",
   "scripts": {
     "start": "node build/server.js",
+    "vercel-run": "vercel dev",
+    "deploy" : "vercel deploy --prod",
     "postinstall": "tsc",
     "dev": "nodemon --config nodemon.json src/server.ts"
   },

@@ -10,7 +10,7 @@ const port = parseInt(process.env.PORT, 10) || 5000;
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: false }));
-app.get("/api/healthcheck", (req, res) => res.status(200).send("ok"));
+app.get("/healthcheck", (req, res) => res.status(200).send("ok"));
 app.get("/api/cookies", controller_1.getCookie);
 app.listen(port, host, function () {
     console.log(`Server started.......${port}`);
