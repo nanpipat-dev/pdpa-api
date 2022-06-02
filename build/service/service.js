@@ -26,7 +26,7 @@ function getCookieService(url) {
             //   ],
             // });
             const browser = yield puppeteer_1.default.launch({
-                args: [...chrome_aws_lambda_1.default.args, '--disable-setuid-sandbox'],
+                args: [...chrome_aws_lambda_1.default.args, '--no-sandbox', "--disabled-setupid-sandbox"],
                 defaultViewport: chrome_aws_lambda_1.default.defaultViewport,
                 executablePath: yield chrome_aws_lambda_1.default.executablePath,
                 headless: true,

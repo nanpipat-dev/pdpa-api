@@ -12,7 +12,7 @@ export async function getCookieService(url: string): Promise<CookiesType[]> {
         //   ],
         // });
         const browser = await puppeteer.launch({
-          args: [...chromium.args, '--disable-setuid-sandbox'],
+          args: [...chromium.args, '--no-sandbox', "--disabled-setupid-sandbox"],
           defaultViewport: chromium.defaultViewport,
           executablePath: await chromium.executablePath,
           headless: true,
