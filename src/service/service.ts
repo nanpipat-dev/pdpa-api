@@ -1,15 +1,22 @@
 
 import {CookiesType} from "../model/model"
-import puppeteer from 'puppeteer';
+import chromium from 'chrome-aws-lambda';
 
 export async function getCookieService(url: string): Promise<CookiesType[]> {
     try {
-        const browser = await puppeteer.launch({
-          args: [
-            '--no-sandbox',
-            '--disable-setuid-sandbox',
-          ],
-        });
+        // const browser = await puppeteer.launch({
+        //   args: [
+        //     '--no-sandbox',
+        //     '--disable-setuid-sandbox',
+        //   ],
+        // });
+        const browser = await chromium.puppeteer.launch({
+          args: [...chromium.args, "--hide-scrollbars", "--disable-web-security"],
+          defaultViewport: chromium.defaultViewport,
+          executablePath: await chromium.executablePath,
+          headless: true,
+          ignoreHTTPSErrors: true,
+        })
         const page = await browser.newPage();
 
         // let encoded = encodeURI(url);

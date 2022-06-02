@@ -6,11 +6,12 @@
   "scripts": {
     "start": "node build/server.js",
     "vercel-run": "vercel dev",
-    "deploy" : "vercel deploy --prod",
+    "deploy": "vercel deploy --prod",
     "postinstall": "tsc",
     "dev": "nodemon --config nodemon.json src/server.ts"
   },
   "dependencies": {
+    "chrome-aws-lambda": "^10.1.0",
     "config": "^3.3.7",
     "connect-timeout": "^1.9.0",
     "cors": "^2.8.5",
@@ -21,14 +22,13 @@
     "nodemon": "^2.0.16",
     "pino": "^7.11.0",
     "pino-pretty": "^7.6.1",
-    "puppeteer": "^14.1.2",
+    "puppeteer-core": "^14.2.0",
     "vercel": "^24.2.5",
     "yup": "^0.32.11"
   },
   "devDependencies": {
     "@types/config": "^0.0.41",
     "@types/express": "^4.17.13",
-    "@types/puppeteer": "^5.4.6",
     "ts-node": "^10.8.0",
     "typescript": "^4.7.2"
   }
