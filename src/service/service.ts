@@ -1,6 +1,7 @@
 
 import {CookiesType} from "../model/model"
-import chromium from 'chrome-aws-lambda';
+import puppeteer from 'puppeteer'
+import chromium from 'chrome-aws-lambda'
 
 export async function getCookieService(url: string): Promise<CookiesType[]> {
     try {
@@ -10,8 +11,8 @@ export async function getCookieService(url: string): Promise<CookiesType[]> {
         //     '--disable-setuid-sandbox',
         //   ],
         // });
-        const browser = await chromium.puppeteer.launch({
-          args: [...chromium.args, "--hide-scrollbars", "--disable-web-security"],
+        const browser = await puppeteer.launch({
+          args: [...chromium.args, '--disable-setuid-sandbox'],
           defaultViewport: chromium.defaultViewport,
           executablePath: await chromium.executablePath,
           headless: true,
@@ -82,4 +83,6 @@ export async function getCookieService(url: string): Promise<CookiesType[]> {
         console.log(error,"errrr")
       throw new Error("Invalid url");
     }
+
+    return []
   }

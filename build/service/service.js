@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getCookieService = void 0;
+const puppeteer_1 = __importDefault(require("puppeteer"));
 const chrome_aws_lambda_1 = __importDefault(require("chrome-aws-lambda"));
 function getCookieService(url) {
     var _a, _b, _c;
@@ -24,8 +25,8 @@ function getCookieService(url) {
             //     '--disable-setuid-sandbox',
             //   ],
             // });
-            const browser = yield chrome_aws_lambda_1.default.puppeteer.launch({
-                args: [...chrome_aws_lambda_1.default.args, "--hide-scrollbars", "--disable-web-security"],
+            const browser = yield puppeteer_1.default.launch({
+                args: [...chrome_aws_lambda_1.default.args, '--disable-setuid-sandbox'],
                 defaultViewport: chrome_aws_lambda_1.default.defaultViewport,
                 executablePath: yield chrome_aws_lambda_1.default.executablePath,
                 headless: true,
@@ -76,6 +77,7 @@ function getCookieService(url) {
             console.log(error, "errrr");
             throw new Error("Invalid url");
         }
+        return [];
     });
 }
 exports.getCookieService = getCookieService;
