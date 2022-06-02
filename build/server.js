@@ -4,14 +4,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const routes_1 = __importDefault(require("./routes"));
+const controller_1 = require("./controller/controller");
 const host = '0.0.0.0';
 const port = parseInt(process.env.PORT, 10) || 5000;
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: false }));
-var server = app.listen(port, host, function () {
+app.get("/api/healthcheck", (req, res) => res.status(200).send("ok"));
+app.get("/api/cookies", controller_1.getCookie);
+app.listen(port, host, function () {
     console.log(`Server started.......${port}`);
-    (0, routes_1.default)(app);
+    // routes(app);
 });
-server.timeout = 60000;
+module.exports = app;

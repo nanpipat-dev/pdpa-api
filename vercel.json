@@ -3,13 +3,18 @@
     "builds": [
         {
             "src": "build/server.js",
-            "use": "@vercel/node"
+            "use": "@vercel/node",
+            "config": {
+                "includeFiles": [
+                    "build/**"
+                ]
+            }
         }
     ],
-    "routes": [
+    "rewrites": [
         {
-            "src": "/(.*)",
-            "dest": "/"
+            "source": "/api/(.*)",
+            "destination": "/build/server.js"
         }
     ]
-  }
+}
