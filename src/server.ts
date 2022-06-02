@@ -12,7 +12,7 @@ const app = express();
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
-app.get("/healthcheck", (req: Request, res: Response) => res.status(200).send("ok"));
+app.get("/api/healthcheck", (req: Request, res: Response) => res.status(200).send("ok"));
 app.get("/api/cookies", getCookie);
 
 app.listen(port, host, function () {
