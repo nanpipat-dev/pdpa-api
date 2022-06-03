@@ -6,9 +6,13 @@ import puppeteer from 'puppeteer';
 export async function getCookieService(url: string): Promise<CookiesType[]> {
     try {
         const browser = await puppeteer.launch({
+          headless: true,
+          executablePath: '/usr/bin/chromium-browser',
           args: [
-            '--no-sandbox',
-            '--disable-setuid-sandbox',
+            "--disable-gpu",
+            "--disable-dev-shm-usage",
+            "--disable-setuid-sandbox",
+            "--no-sandbox",
           ],
         });
         console.log("newver")
