@@ -1,15 +1,12 @@
 {
   "name": "pdpa-api-1",
   "version": "1.0.0",
-  "main": "build/server.js",
+  "main": "./src/server.ts",
   "license": "MIT",
   "scripts": {
     "start": "node build/server.js",
-    "vercel-run": "vercel dev",
-    "deploy": "vercel deploy --prod",
     "postinstall": "tsc",
-    "dev": "ts-node src/server.ts",
-    "build": "tsc -p"
+    "dev": "ts-node src/server.ts"
   },
   "dependencies": {
     "chrome-aws-lambda": "^10.1.0",
