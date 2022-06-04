@@ -4,7 +4,7 @@
   "main": "build/server.js",
   "license": "MIT",
   "scripts": {
-    "start": "ts-node build/server.js",
+    "start": "node build/server.js",
     "vercel-run": "vercel dev",
     "deploy": "vercel deploy --prod",
     "postinstall": "tsc",
