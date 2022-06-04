@@ -14,29 +14,30 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getCookieService = void 0;
 // import chromium from 'chrome-aws-lambda'
-const puppeteer_1 = __importDefault(require("puppeteer"));
+// import puppeteer from 'puppeteer';
+const chrome_aws_lambda_1 = __importDefault(require("chrome-aws-lambda"));
 function getCookieService(url) {
     var _a, _b, _c;
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const browser = yield puppeteer_1.default.launch({
-                headless: true,
-                executablePath: '/usr/bin/chromium-browser',
-                args: [
-                    "--disable-gpu",
-                    "--disable-dev-shm-usage",
-                    "--disable-setuid-sandbox",
-                    "--no-sandbox",
-                ],
-            });
-            console.log("newver");
             // const browser = await puppeteer.launch({
-            //   args: [...chromium.args, '--no-sandbox', "--disabled-setupid-sandbox"],
-            //   defaultViewport: chromium.defaultViewport,
-            //   executablePath: await chromium.executablePath,
             //   headless: true,
-            //   ignoreHTTPSErrors: true,
-            // })
+            //   executablePath: '/usr/bin/chromium-browser',
+            //   args: [
+            //     "--disable-gpu",
+            //     "--disable-dev-shm-usage",
+            //     "--disable-setuid-sandbox",
+            //     "--no-sandbox",
+            //   ],
+            // });
+            console.log("newver");
+            const browser = yield chrome_aws_lambda_1.default.puppeteer.launch({
+                args: chrome_aws_lambda_1.default.args,
+                defaultViewport: chrome_aws_lambda_1.default.defaultViewport,
+                executablePath: process.env.CHROME_EXECUTABLE_PATH || (yield chrome_aws_lambda_1.default.executablePath),
+                headless: true,
+                ignoreHTTPSErrors: true,
+            });
             const page = yield browser.newPage();
             // let encoded = encodeURI(url);
             const withHttp = () => url.replace(/^(?:(.*:)?\/\/)?(.*)/i, (match, schemma, nonSchemmaUrl) => schemma ? match : `https://${nonSchemmaUrl}`);

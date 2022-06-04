@@ -12,6 +12,7 @@
     "build": "tsc -p"
   },
   "dependencies": {
+    "chrome-aws-lambda": "^10.1.0",
     "config": "^3.3.7",
     "connect-timeout": "^1.9.0",
     "cors": "^2.8.5",
@@ -25,6 +26,9 @@
     "puppeteer": "^14.2.0",
     "vercel": "^24.2.5",
     "yup": "^0.32.11"
+  },
+  "engines": {
+    "node": "14.x"
   },
   "devDependencies": {
     "@types/config": "^0.0.41",
