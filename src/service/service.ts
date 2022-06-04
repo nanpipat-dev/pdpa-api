@@ -76,8 +76,6 @@ export async function getCookieService(url: string): Promise<CookiesType[]> {
                     value: cookies[i].value,
                     name: cookies[i].name,
                 }
-
-
                 await responseCookie.push(cookietype)
             }
 

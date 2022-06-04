@@ -20,9 +20,13 @@ function getCookieService(url) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const browser = yield puppeteer_1.default.launch({
+                headless: true,
+                executablePath: '/usr/bin/chromium-browser',
                 args: [
-                    '--no-sandbox',
-                    '--disable-setuid-sandbox',
+                    "--disable-gpu",
+                    "--disable-dev-shm-usage",
+                    "--disable-setuid-sandbox",
+                    "--no-sandbox",
                 ],
             });
             console.log("newver");
