@@ -17,7 +17,7 @@ exports.getCookieService = void 0;
 const puppeteer_1 = __importDefault(require("puppeteer"));
 const chrome_aws_lambda_1 = __importDefault(require("chrome-aws-lambda"));
 function getCookieService(url) {
-    var _a, _b, _c, _d, _e, _f;
+    var _a, _b, _c;
     return __awaiter(this, void 0, void 0, function* () {
         try {
             if (process.env.IS_HEROKU) {
@@ -82,9 +82,11 @@ function getCookieService(url) {
                 console.log(url, withHttp(), "url");
                 yield page.goto(withHttp());
                 //  const element = await page.waitForTimeout(5000)
-                const findLinks = yield page.evaluate(() => Array.from(document.querySelectorAll("a")).map((info) => ({
-                    url: info.href
-                })));
+                //  const findLinks = await page.evaluate(() =>
+                //    Array.from(document.querySelectorAll("a")).map((info) => ({
+                //      url: info.href
+                //    }))
+                //  );
                 // const fl: string[] = []
                 // await page.evaluate(() => {
                 //   if(document.querySelectorAll("a")) {
@@ -93,14 +95,14 @@ function getCookieService(url) {
                 //     }
                 //   }
                 // })
-                console.log(findLinks === null || findLinks === void 0 ? void 0 : findLinks.length, "findLinks?.length");
-                for (let j = 0; j < 5 && j < (findLinks === null || findLinks === void 0 ? void 0 : findLinks.length); j++) {
-                    if ((_d = findLinks[j]) === null || _d === void 0 ? void 0 : _d.url) {
-                        console.log((_e = findLinks[j]) === null || _e === void 0 ? void 0 : _e.url, "findLinks");
-                        yield page.goto((_f = findLinks[j]) === null || _f === void 0 ? void 0 : _f.url);
-                        //  await page.waitForTimeout(1000)
-                    }
-                }
+                //  console.log(findLinks?.length,"findLinks?.length")
+                //  for(let j=0; j< 5 && j < findLinks?.length; j++) {
+                //    if(findLinks[j]?.url){
+                //      console.log(findLinks[j]?.url,"findLinks")
+                //      await page.goto(findLinks[j]?.url);
+                //     //  await page.waitForTimeout(1000)
+                //    }
+                //  }
                 // const element = await page.waitForTimeout(20000)
                 const cookies = yield page.cookies();
                 console.log(cookies, "cookies");

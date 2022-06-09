@@ -92,11 +92,11 @@ export async function getCookieService(url: string): Promise<CookiesType[]> {
  
         //  const element = await page.waitForTimeout(5000)
  
-       const findLinks = await page.evaluate(() =>
-         Array.from(document.querySelectorAll("a")).map((info) => ({
-           url: info.href
-         }))
-       );
+      //  const findLinks = await page.evaluate(() =>
+      //    Array.from(document.querySelectorAll("a")).map((info) => ({
+      //      url: info.href
+      //    }))
+      //  );
  
        // const fl: string[] = []
        // await page.evaluate(() => {
@@ -107,15 +107,15 @@ export async function getCookieService(url: string): Promise<CookiesType[]> {
        //   }
        // })
  
-       console.log(findLinks?.length,"findLinks?.length")
+      //  console.log(findLinks?.length,"findLinks?.length")
  
-       for(let j=0; j< 5 && j < findLinks?.length; j++) {
-         if(findLinks[j]?.url){
-           console.log(findLinks[j]?.url,"findLinks")
-           await page.goto(findLinks[j]?.url);
-          //  await page.waitForTimeout(1000)
-         }
-       }
+      //  for(let j=0; j< 5 && j < findLinks?.length; j++) {
+      //    if(findLinks[j]?.url){
+      //      console.log(findLinks[j]?.url,"findLinks")
+      //      await page.goto(findLinks[j]?.url);
+      //     //  await page.waitForTimeout(1000)
+      //    }
+      //  }
  
  
          // const element = await page.waitForTimeout(20000)
