@@ -17,7 +17,6 @@ exports.getCookieService = void 0;
 const puppeteer_1 = __importDefault(require("puppeteer"));
 const chrome_aws_lambda_1 = __importDefault(require("chrome-aws-lambda"));
 function getCookieService(url) {
-    var _a, _b, _c;
     return __awaiter(this, void 0, void 0, function* () {
         try {
             if (process.env.IS_HEROKU) {
@@ -27,46 +26,50 @@ function getCookieService(url) {
                         '--disable-setuid-sandbox',
                     ]
                 });
-                const page = yield browser.newPage();
-                // let encoded = encodeURI(url);
-                const withHttp = () => url.replace(/^(?:(.*:)?\/\/)?(.*)/i, (match, schemma, nonSchemmaUrl) => schemma ? match : `https://${nonSchemmaUrl}`);
-                console.log(url, withHttp(), "url");
-                yield page.goto(withHttp());
-                // const element = await page.waitForTimeout(5000)
-                const findLinks = yield page.evaluate(() => Array.from(document.querySelectorAll("a")).map((info) => ({
-                    url: info.href
-                })));
-                // const fl: string[] = []
-                // await page.evaluate(() => {
-                //   if(document.querySelectorAll("a")) {
-                //     for(let d =0; (d < document.querySelectorAll("a").length && d < 10); d++){
-                //       console.log(document.querySelectorAll("a")[d])
-                //     }
-                //   }
-                // })
-                console.log(findLinks === null || findLinks === void 0 ? void 0 : findLinks.length, "findLinks?.length");
-                for (let j = 0; j < 5 && j < (findLinks === null || findLinks === void 0 ? void 0 : findLinks.length); j++) {
-                    if ((_a = findLinks[j]) === null || _a === void 0 ? void 0 : _a.url) {
-                        console.log((_b = findLinks[j]) === null || _b === void 0 ? void 0 : _b.url, "findLinks");
-                        yield page.goto((_c = findLinks[j]) === null || _c === void 0 ? void 0 : _c.url);
-                        // await page.waitForTimeout(1000)
-                    }
-                }
-                // const element = await page.waitForTimeout(20000)
-                const cookies = yield page.cookies();
-                console.log(cookies, "cookies");
-                const responseCookie = [];
-                if (cookies) {
-                    for (var i = 0; i < (cookies === null || cookies === void 0 ? void 0 : cookies.length); i++) {
-                        const cookietype = {
-                            domain: cookies[i].domain,
-                            value: cookies[i].value,
-                            name: cookies[i].name,
-                        };
-                        yield responseCookie.push(cookietype);
-                    }
-                }
+                const responseCookie = yield getCoolies(browser, url);
                 return responseCookie;
+                //   const page = await browser.newPage();
+                //   // let encoded = encodeURI(url);
+                //   const withHttp = () => url.replace(/^(?:(.*:)?\/\/)?(.*)/i, (match, schemma, nonSchemmaUrl) => schemma ? match : `https://${nonSchemmaUrl}`);
+                //   console.log(url,withHttp(),"url")
+                //   await page.goto(withHttp());
+                //   // const element = await page.waitForTimeout(5000)
+                // const findLinks = await page.evaluate(() =>
+                //   Array.from(document.querySelectorAll("a")).map((info) => ({
+                //     url: info.href
+                //   }))
+                // );
+                // // const fl: string[] = []
+                // // await page.evaluate(() => {
+                // //   if(document.querySelectorAll("a")) {
+                // //     for(let d =0; (d < document.querySelectorAll("a").length && d < 10); d++){
+                // //       console.log(document.querySelectorAll("a")[d])
+                // //     }
+                // //   }
+                // // })
+                // console.log(findLinks?.length,"findLinks?.length")
+                // for(let j=0; j< 5 && j < findLinks?.length; j++) {
+                //   if(findLinks[j]?.url){
+                //     console.log(findLinks[j]?.url,"findLinks")
+                //     await page.goto(findLinks[j]?.url);
+                //     // await page.waitForTimeout(1000)
+                //   }
+                // }
+                //   // const element = await page.waitForTimeout(20000)
+                //   const cookies = await page.cookies()
+                //   console.log(cookies,"cookies")
+                //   const responseCookie: CookiesType[] = []
+                //   if (cookies) {
+                //       for (var i = 0; i < cookies?.length; i++) {
+                //           const cookietype: CookiesType = {
+                //               domain: cookies[i].domain,
+                //               value: cookies[i].value,
+                //               name: cookies[i].name,
+                //           }
+                //           await responseCookie.push(cookietype)
+                //       }
+                //   }
+                // return responseCookie
             }
             else {
                 const browser = yield chrome_aws_lambda_1.default.puppeteer.launch({
@@ -76,65 +79,109 @@ function getCookieService(url) {
                     headless: true,
                     ignoreHTTPSErrors: true,
                 });
-                const page = yield browser.newPage();
-                // let encoded = encodeURI(url);
-                const withHttp = () => url.replace(/^(?:(.*:)?\/\/)?(.*)/i, (match, schemma, nonSchemmaUrl) => schemma ? match : `https://${nonSchemmaUrl}`);
-                console.log(url, withHttp(), "url");
-                yield page.goto(withHttp());
-                //  const element = await page.waitForTimeout(5000)
-                //  const findLinks = await page.evaluate(() =>
-                //    Array.from(document.querySelectorAll("a")).map((info) => ({
-                //      url: info.href
-                //    }))
-                //  );
-                // const fl: string[] = []
-                // await page.evaluate(() => {
-                //   if(document.querySelectorAll("a")) {
-                //     for(let d =0; (d < document.querySelectorAll("a").length && d < 10); d++){
-                //       console.log(document.querySelectorAll("a")[d])
-                //     }
-                //   }
-                // })
-                //  console.log(findLinks?.length,"findLinks?.length")
-                //  for(let j=0; j< 5 && j < findLinks?.length; j++) {
-                //    if(findLinks[j]?.url){
-                //      console.log(findLinks[j]?.url,"findLinks")
-                //      await page.goto(findLinks[j]?.url);
-                //     //  await page.waitForTimeout(1000)
-                //    }
-                //  }
-                // const element = await page.waitForTimeout(20000)
-                const cookies = yield page.cookies();
-                console.log(cookies, "cookies");
-                const responseCookie = [];
-                if (cookies) {
-                    for (var i = 0; i < (cookies === null || cookies === void 0 ? void 0 : cookies.length); i++) {
-                        const cookietype = {
-                            domain: cookies[i].domain,
-                            value: cookies[i].value,
-                            name: cookies[i].name,
-                        };
-                        yield responseCookie.push(cookietype);
-                    }
-                }
+                const responseCookie = yield getCoolies(browser, url);
                 return responseCookie;
+                //   const page = await browser.newPage();
+                //    // let encoded = encodeURI(url);
+                //    const withHttp = () => url.replace(/^(?:(.*:)?\/\/)?(.*)/i, (match, schemma, nonSchemmaUrl) => schemma ? match : `https://${nonSchemmaUrl}`);
+                //    console.log(url,withHttp(),"url")
+                //    await page.goto(withHttp());
+                //   //  const element = await page.waitForTimeout(5000)
+                // //  const findLinks = await page.evaluate(() =>
+                // //    Array.from(document.querySelectorAll("a")).map((info) => ({
+                // //      url: info.href
+                // //    }))
+                // //  );
+                //  // const fl: string[] = []
+                //  // await page.evaluate(() => {
+                //  //   if(document.querySelectorAll("a")) {
+                //  //     for(let d =0; (d < document.querySelectorAll("a").length && d < 10); d++){
+                //  //       console.log(document.querySelectorAll("a")[d])
+                //  //     }
+                //  //   }
+                //  // })
+                // //  console.log(findLinks?.length,"findLinks?.length")
+                // //  for(let j=0; j< 5 && j < findLinks?.length; j++) {
+                // //    if(findLinks[j]?.url){
+                // //      console.log(findLinks[j]?.url,"findLinks")
+                // //      await page.goto(findLinks[j]?.url);
+                // //     //  await page.waitForTimeout(1000)
+                // //    }
+                // //  }
+                //    // const element = await page.waitForTimeout(20000)
+                //    const cookies = await page.cookies()
+                //    console.log(cookies,"cookies")
+                //    const responseCookie: CookiesType[] = []
+                //    if (cookies) {
+                //        for (var i = 0; i < cookies?.length; i++) {
+                //            const cookietype: CookiesType = {
+                //                domain: cookies[i].domain,
+                //                value: cookies[i].value,
+                //                name: cookies[i].name,
+                //            }
+                //            await responseCookie.push(cookietype)
+                //        }
+                //    }
+                //  return responseCookie
+                // }
+                //   // const browser = await puppeteer.launch({
+                //   //   headless: true,
+                //   //   executablePath: '/usr/bin/chromium-browser',
+                //   //   args: [
+                //   //     "--disable-gpu",
+                //   //     "--disable-dev-shm-usage",
+                //   //     "--disable-setuid-sandbox",
+                //   //     "--no-sandbox",
+                //   //   ],
+                //   // });
             }
-            // const browser = await puppeteer.launch({
-            //   headless: true,
-            //   executablePath: '/usr/bin/chromium-browser',
-            //   args: [
-            //     "--disable-gpu",
-            //     "--disable-dev-shm-usage",
-            //     "--disable-setuid-sandbox",
-            //     "--no-sandbox",
-            //   ],
-            // });
         }
         catch (error) {
             console.log(error, "errrr");
             throw new Error("Invalid url");
         }
-        return [];
     });
 }
 exports.getCookieService = getCookieService;
+function getCoolies(browser, url) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const page = yield browser.newPage();
+        const withHttp = () => url.replace(/^(?:(.*:)?\/\/)?(.*)/i, (match, schemma, nonSchemmaUrl) => schemma ? match : `https://${nonSchemmaUrl}`);
+        console.log(url, withHttp(), "url");
+        yield page.goto(withHttp());
+        const findLinks = yield page.evaluate(() => {
+            console.log(document.querySelectorAll("a"), "href");
+            let arr = [];
+            if (document.querySelectorAll("a")) {
+                for (let i = 0; i < document.querySelectorAll("a").length && i < 5; i++) {
+                    console.log(document.querySelectorAll("a")[i].href, "href");
+                    arr.push(document.querySelectorAll("a")[i].href);
+                }
+                return arr;
+            }
+        });
+        console.log(findLinks, "findLinks");
+        for (let j = 0; j < 5 && j < findLinks.length; j++) {
+            if (findLinks[j]) {
+                console.log(findLinks[j], "findLinks");
+                yield page.goto(findLinks[j]);
+                //  await page.waitForTimeout(1000)
+            }
+        }
+        const client = yield page.target().createCDPSession();
+        const cookies = (yield client.send('Network.getAllCookies')).cookies;
+        console.log(cookies, "cookies");
+        const responseCookie = [];
+        if (cookies) {
+            for (var i = 0; i < (cookies === null || cookies === void 0 ? void 0 : cookies.length); i++) {
+                const cookietype = {
+                    domain: cookies[i].domain,
+                    value: cookies[i].value,
+                    name: cookies[i].name,
+                };
+                yield responseCookie.push(cookietype);
+            }
+        }
+        return responseCookie;
+    });
+}
