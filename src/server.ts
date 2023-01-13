@@ -15,7 +15,7 @@ app.use(cors())
 app.use(express.urlencoded({ extended: false }))
 
 app.get("/api/healthz", (req: Request, res: Response) => res.status(200).send("ok"));
-app.get("/api/cookies", getCookie);
+app.get("/api/conkies", getCookie);
 app.post("/api/company", saveCompany);
 
 app.listen(port, host, function () {
