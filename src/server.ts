@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 import log from './logger'
 import routes from './routes';
 import {getCookie, saveCompany} from "./controller/controller"
@@ -10,6 +11,7 @@ const port: number = parseInt(<string>process.env.PORT, 10) || 5055
 const app = express();
 
 app.use(express.json())
+app.use(cors())
 app.use(express.urlencoded({ extended: false }))
 
 app.get("/api/healthz", (req: Request, res: Response) => res.status(200).send("ok"));
