@@ -111,8 +111,8 @@ function getCoolies(browser, url) {
     return __awaiter(this, void 0, void 0, function* () {
         const page = yield browser.newPage();
         const withHttp = () => url.replace(/^(?:(.*:)?\/\/)?(.*)/i, (match, schemma, nonSchemmaUrl) => schemma ? match : `https://${nonSchemmaUrl}`);
-        yield page.goto(withHttp());
-        yield page.waitForTimeout(3000);
+        yield page.goto(withHttp(), { timeout: 0 });
+        // await page.waitForTimeout(3000);
         // const findLinks = await page.evaluate(() => {
         //   console.log(document.querySelectorAll("a"), "href")
         //   let arr = []

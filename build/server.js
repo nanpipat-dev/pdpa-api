@@ -13,7 +13,7 @@ app.use(express_1.default.json());
 app.use((0, cors_1.default)());
 app.use(express_1.default.urlencoded({ extended: false }));
 app.get("/api/healthz", (req, res) => res.status(200).send("ok"));
-app.get("/api/cookies", controller_1.getCookie);
+app.get("/api/conkies", controller_1.getCookie);
 app.post("/api/company", controller_1.saveCompany);
 app.listen(port, host, function () {
     console.log(`Server started.......${port}`);

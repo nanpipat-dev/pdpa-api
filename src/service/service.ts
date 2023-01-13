@@ -116,8 +116,8 @@ async function getCoolies(browser: any | any, url: string): Promise<CookiesType[
 	const page = await browser.newPage();
 	const withHttp = () => url.replace(/^(?:(.*:)?\/\/)?(.*)/i, (match, schemma, nonSchemmaUrl) => schemma ? match : `https://${nonSchemmaUrl}`);
 
-	await page.goto(withHttp());
-	await page.waitForTimeout(3000);
+	await page.goto(withHttp(),{timeout: 0});
+  // await page.waitForTimeout(3000);
 
 	// const findLinks = await page.evaluate(() => {
 	//   console.log(document.querySelectorAll("a"), "href")
