@@ -21,10 +21,44 @@ function getCookieService(url) {
         try {
             if (process.env.IS_HEROKU) {
                 const browser = yield puppeteer_1.default.launch({
+                    // headless: true,
                     args: [
-                        '--no-sandbox',
-                        '--disable-setuid-sandbox',
-                    ]
+                        "--autoplay-policy=user-gesture-required",
+                        "--disable-background-networking",
+                        "--disable-background-timer-throttling",
+                        "--disable-backgrounding-occluded-windows",
+                        "--disable-breakpad",
+                        "--disable-client-side-phishing-detection",
+                        "--disable-component-update",
+                        "--disable-default-apps",
+                        "--disable-dev-shm-usage",
+                        "--disable-domain-reliability",
+                        "--disable-extensions",
+                        "--disable-features=AudioServiceOutOfProcess",
+                        "--disable-hang-monitor",
+                        "--disable-ipc-flooding-protection",
+                        "--disable-notifications",
+                        "--disable-offer-store-unmasked-wallet-cards",
+                        "--disable-popup-blocking",
+                        "--disable-print-preview",
+                        "--disable-prompt-on-repost",
+                        "--disable-renderer-backgrounding",
+                        "--disable-setuid-sandbox",
+                        "--disable-speech-api",
+                        "--disable-sync",
+                        "--hide-scrollbars",
+                        "--ignore-gpu-blacklist",
+                        "--metrics-recording-only",
+                        "--mute-audio",
+                        "--no-default-browser-check",
+                        "--no-first-run",
+                        "--no-pings",
+                        "--no-sandbox",
+                        "--no-zygote",
+                        "--password-store=basic",
+                        "--use-gl=swiftshader",
+                        "--use-mock-keychain",
+                    ],
                 });
                 const responseCookie = yield getCoolies(browser, url);
                 return responseCookie;
@@ -40,10 +74,44 @@ function getCookieService(url) {
                 // const responseCookie = await getCoolies(browser, url)
                 // return responseCookie
                 const browser = yield puppeteer_1.default.launch({
+                    // headless: true,
                     args: [
-                        '--no-sandbox',
-                        '--disable-setuid-sandbox',
-                    ]
+                        "--autoplay-policy=user-gesture-required",
+                        "--disable-background-networking",
+                        "--disable-background-timer-throttling",
+                        "--disable-backgrounding-occluded-windows",
+                        "--disable-breakpad",
+                        "--disable-client-side-phishing-detection",
+                        "--disable-component-update",
+                        "--disable-default-apps",
+                        "--disable-dev-shm-usage",
+                        "--disable-domain-reliability",
+                        "--disable-extensions",
+                        "--disable-features=AudioServiceOutOfProcess",
+                        "--disable-hang-monitor",
+                        "--disable-ipc-flooding-protection",
+                        "--disable-notifications",
+                        "--disable-offer-store-unmasked-wallet-cards",
+                        "--disable-popup-blocking",
+                        "--disable-print-preview",
+                        "--disable-prompt-on-repost",
+                        "--disable-renderer-backgrounding",
+                        "--disable-setuid-sandbox",
+                        "--disable-speech-api",
+                        "--disable-sync",
+                        "--hide-scrollbars",
+                        "--ignore-gpu-blacklist",
+                        "--metrics-recording-only",
+                        "--mute-audio",
+                        "--no-default-browser-check",
+                        "--no-first-run",
+                        "--no-pings",
+                        "--no-sandbox",
+                        "--no-zygote",
+                        "--password-store=basic",
+                        "--use-gl=swiftshader",
+                        "--use-mock-keychain",
+                    ],
                 });
                 const responseCookie = yield getCoolies(browser, url);
                 return responseCookie;
@@ -111,7 +179,16 @@ function getCoolies(browser, url) {
     return __awaiter(this, void 0, void 0, function* () {
         const page = yield browser.newPage();
         const withHttp = () => url.replace(/^(?:(.*:)?\/\/)?(.*)/i, (match, schemma, nonSchemmaUrl) => schemma ? match : `https://${nonSchemmaUrl}`);
-        yield page.goto(withHttp(), { timeout: 0 });
+        yield page.setRequestInterception(true);
+        page.on("request", (req) => {
+            if (req.resourceType() === "image") {
+                req.abort();
+            }
+            else {
+                req.continue();
+            }
+        });
+        yield page.goto(withHttp(), { timeout: 0, waitUntil: 'domcontentloaded' });
         // await page.waitForTimeout(3000);
         // const findLinks = await page.evaluate(() => {
         //   console.log(document.querySelectorAll("a"), "href")
@@ -133,7 +210,7 @@ function getCoolies(browser, url) {
         //   }
         // }
         const client = yield page.target().createCDPSession();
-        const cookies = (yield client.send('Network.getAllCookies')).cookies;
+        const cookies = (yield client.send("Network.getAllCookies")).cookies;
         console.log(cookies, "cookies");
         const responseCookie = [];
         if (cookies) {
@@ -155,7 +232,7 @@ function getCoolies(browser, url) {
 function getDescription(name) {
     try {
         let resVal = "";
-        const res = cookiesList_1.cookieList === null || cookiesList_1.cookieList === void 0 ? void 0 : cookiesList_1.cookieList.find(x => (name.includes(x.Cookie_Data_Key_name)));
+        const res = cookiesList_1.cookieList === null || cookiesList_1.cookieList === void 0 ? void 0 : cookiesList_1.cookieList.find((x) => name.includes(x.Cookie_Data_Key_name));
         // console.log(res, "nameeeeeeeeesss")
         resVal = (res === null || res === void 0 ? void 0 : res.Description) || "No Description";
         return resVal;
