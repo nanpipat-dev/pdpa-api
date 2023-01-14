@@ -2,8 +2,7 @@ FROM node:16.3.0-alpine
 WORKDIR /usr
 
 RUN apk update && apk add --no-cache nmap && \
-    echo @edge http://nl.alpinelinux.org/alpine/edge/community >> /etc/apk/repositories && \
-    echo @edge http://nl.alpinelinux.org/alpine/edge/main >> /etc/apk/repositories && \
+    echo @edge apk add -X https://dl-cdn.alpinelinux.org/alpine/v3.16/main -u alpine-keys >> /etc/apk/repositories && \
     apk update && \
     apk add --no-cache \
       chromium \
@@ -19,5 +18,5 @@ COPY tsconfig.json ./
 COPY src ./src
 RUN ls -a
 RUN npm install && npm run build
-EXPOSE 4005
+EXPOSE 5055
 CMD ["npm","start"]
