@@ -9,6 +9,7 @@ export async function getCookieService(url: string): Promise<CookiesType[]> {
     if (process.env.IS_HEROKU) {
       const browser = await puppeteer.launch({
         // headless: true,
+        executablePath: "/usr/bin/chromium-browser",
         args: [
           "--autoplay-policy=user-gesture-required",
           "--disable-background-networking",
@@ -62,6 +63,7 @@ export async function getCookieService(url: string): Promise<CookiesType[]> {
       // return responseCookie
       const browser = await puppeteer.launch({
         // headless: true,
+        executablePath: "/usr/bin/chromium-browser",
         args: [
           "--autoplay-policy=user-gesture-required",
           "--disable-background-networking",
