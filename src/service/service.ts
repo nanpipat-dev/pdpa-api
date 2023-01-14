@@ -9,7 +9,7 @@ export async function getCookieService(url: string): Promise<CookiesType[]> {
   try {
 
       browser = await puppeteer.launch({
-      // executablePath: "/usr/bin/chromium-browser",
+      executablePath: "/usr/bin/chromium-browser",
       headless: false,
       args: [
         '--headless',
