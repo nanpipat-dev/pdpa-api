@@ -5,123 +5,30 @@ import puppeteer, { Browser } from "puppeteer";
 import chromium from "chrome-aws-lambda";
 
 export async function getCookieService(url: string): Promise<CookiesType[]> {
+  let browser = null;
   try {
-    if (process.env.IS_HEROKU) {
-      const browser = await puppeteer.launch({
-        // headless: true,
-        executablePath: "/usr/bin/chromium-browser",
-        args: [
-          "--autoplay-policy=user-gesture-required",
-          "--disable-background-networking",
-          "--disable-background-timer-throttling",
-          "--disable-backgrounding-occluded-windows",
-          "--disable-breakpad",
-          "--disable-client-side-phishing-detection",
-          "--disable-component-update",
-          "--disable-default-apps",
-          "--disable-dev-shm-usage",
-          "--disable-domain-reliability",
-          "--disable-extensions",
-          "--disable-features=AudioServiceOutOfProcess",
-          "--disable-hang-monitor",
-          "--disable-ipc-flooding-protection",
-          "--disable-notifications",
-          "--disable-offer-store-unmasked-wallet-cards",
-          "--disable-popup-blocking",
-          "--disable-print-preview",
-          "--disable-prompt-on-repost",
-          "--disable-renderer-backgrounding",
-          "--disable-setuid-sandbox",
-          "--disable-speech-api",
-          "--disable-sync",
-          "--hide-scrollbars",
-          "--ignore-gpu-blacklist",
-          "--metrics-recording-only",
-          "--mute-audio",
-          "--no-default-browser-check",
-          "--no-first-run",
-          "--no-pings",
-          "--no-sandbox",
-          "--no-zygote",
-          "--password-store=basic",
-          "--use-gl=swiftshader",
-          "--use-mock-keychain",
-        ],
-      });
 
-      const responseCookie = await getCoolies(browser, url);
-      return responseCookie;
-    } else {
-      // const browser = await chromium.puppeteer.launch({
-      //   args: chromium.args,
-      //   defaultViewport: chromium.defaultViewport,
-      //   executablePath: process.env.CHROME_EXECUTABLE_PATH || await chromium.executablePath,
-      //   headless: true,
-      //   ignoreHTTPSErrors: true,
-      // })
-      // const responseCookie = await getCoolies(browser, url)
-      // return responseCookie
-      const browser = await puppeteer.launch({
-        // headless: true,
-        executablePath: "/usr/bin/chromium-browser",
-        args: [
-          "--autoplay-policy=user-gesture-required",
-          "--disable-background-networking",
-          "--disable-background-timer-throttling",
-          "--disable-backgrounding-occluded-windows",
-          "--disable-breakpad",
-          "--disable-client-side-phishing-detection",
-          "--disable-component-update",
-          "--disable-default-apps",
-          "--disable-dev-shm-usage",
-          "--disable-domain-reliability",
-          "--disable-extensions",
-          "--disable-features=AudioServiceOutOfProcess",
-          "--disable-hang-monitor",
-          "--disable-ipc-flooding-protection",
-          "--disable-notifications",
-          "--disable-offer-store-unmasked-wallet-cards",
-          "--disable-popup-blocking",
-          "--disable-print-preview",
-          "--disable-prompt-on-repost",
-          "--disable-renderer-backgrounding",
-          "--disable-setuid-sandbox",
-          "--disable-speech-api",
-          "--disable-sync",
-          "--hide-scrollbars",
-          "--ignore-gpu-blacklist",
-          "--metrics-recording-only",
-          "--mute-audio",
-          "--no-default-browser-check",
-          "--no-first-run",
-          "--no-pings",
-          "--no-sandbox",
-          "--no-zygote",
-          "--password-store=basic",
-          "--use-gl=swiftshader",
-          "--use-mock-keychain",
-        ],
-      });
+      browser = await puppeteer.launch({
+      // executablePath: "/usr/bin/chromium-browser",
+      headless: false,
+      args: [
+        '--headless',
+        '--hide-scrollbars',
+        '--mute-audio',
+        '--no-sandbox',
+        '--disable-dev-shm-usage', // https://github.com/GoogleChrome/puppeteer/blob/master/docs/troubleshooting.md#tips
+      ],
+    });
 
-      const responseCookie = await getCoolies(browser, url);
-      return responseCookie;
-    }
-    // const browser = await puppeteer.launch({
-    //   headless: true,
-    //   executablePath: '/usr/bin/chromium-browser',
-    //   args: [
-    //     "--disable-gpu",
-    //     "--disable-dev-shm-usage",
-    //     "--disable-setuid-sandbox",
-    //     "--no-sandbox",
-    //   ],
-    // });
+    const responseCookie = await getCoolies(browser, url);
+    return responseCookie;
+
   } catch (error) {
     console.log(error, "errrr");
     throw new Error("Invalid url");
+  }finally{
+    if (browser) browser.close();
   }
-
-  return [];
 }
 
 // async function getCoolies(browser: Browser | any, url: string): Promise<CookiesType[]> {
@@ -181,12 +88,13 @@ async function getCoolies(
   browser: any | any,
   url: string
 ): Promise<CookiesType[]> {
-  const page = await browser.newPage();
+ 
   const withHttp = () =>
     url.replace(/^(?:(.*:)?\/\/)?(.*)/i, (match, schemma, nonSchemmaUrl) =>
       schemma ? match : `https://${nonSchemmaUrl}`
     );
-
+    
+    const page = await browser.newPage();
     await page.setRequestInterception(true);
 
     page.on("request", (req: any) => {
@@ -197,31 +105,11 @@ async function getCoolies(
       }
     });
 
-  await page.goto(withHttp(), { timeout: 0, waitUntil: 'domcontentloaded' });
-  // await page.waitForTimeout(3000);
+    console.time("start")
 
-  // const findLinks = await page.evaluate(() => {
-  //   console.log(document.querySelectorAll("a"), "href")
-  //   let arr = []
-  //   if (document.querySelectorAll("a")) {
-  //     for (let i = 0; i < document.querySelectorAll("a").length && i < 5; i++) {
-  //       console.log(document.querySelectorAll("a")[i].href, "href")
-  //       arr.push(document.querySelectorAll("a")[i].href)
-  //     }
-
-  //     return arr
-  //   }
-  // })
-
-  // console.log(findLinks, "findLinks")
-
-  // for (let j = 0; j < 5 && j < (findLinks as string[]).length; j++) {
-  //   if ((findLinks as string[])[j]) {
-  //     console.log((findLinks as string[])[j], "findLinks")
-  //     await page.goto((findLinks as string[])[j]);
-  //     //  await page.waitForTimeout(1000)
-  //   }
-  // }
+  await page.goto(withHttp(), { waitUntil: 'domcontentloaded' });
+  
+  
 
   const client = await page.target().createCDPSession();
   const cookies = (await client.send("Network.getAllCookies")).cookies;
@@ -243,6 +131,8 @@ async function getCoolies(
       await responseCookie.push(cookietype);
     }
   }
+
+  console.timeEnd("start")
 
   return responseCookie;
 }
