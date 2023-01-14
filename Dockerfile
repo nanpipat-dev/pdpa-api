@@ -18,5 +18,6 @@ COPY tsconfig.json ./
 COPY src ./src
 RUN ls -a
 RUN npm install && npm run build
+RUN node node_modules/puppeteer/install.js
 EXPOSE 5055
 CMD ["npm","start"]
