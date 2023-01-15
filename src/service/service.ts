@@ -25,7 +25,7 @@ export async function getCookieService(url: string): Promise<CookiesType[]> {
 
   } catch (error) {
     console.log(error, "errrr");
-    throw new Error("Invalid url");
+    throw error
   }finally{
     if (browser) browser.close();
   }
@@ -107,7 +107,7 @@ async function getCoolies(
 
     console.time("start")
 
-  await page.goto(withHttp(), { waitUntil: 'domcontentloaded' });
+  await page.goto(withHttp(), {timeout: 40000, waitUntil: 'domcontentloaded' });
   
   
 
